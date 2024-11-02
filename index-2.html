@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinary CE Requirements by State</title>
+    <style>
+        .ce-table-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-family: Helvetica, Arial, sans-serif;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .ce-title-bar {
+            background-color: #8CC63F;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .ce-title-bar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .ce-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        .ce-table th {
+            background-color: #29ABE2;
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .ce-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            line-height: 1.4;
+        }
+        .ce-table tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        .ce-table tr:hover {
+            background-color: #f0f7ff;
+        }
+        .ce-footer {
+            background-color: #f5f5f5;
+            padding: 16px;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        @media screen and (max-width: 768px) {
+            .ce-table-container {
+                margin: 0;
+                border-radius: 0;
+            }
+            .ce-title-bar h1 {
+                font-size: 20px;
+            }
+            .ce-table {
+                display: block;
+                overflow-x: auto;
+            }
+            .ce-table th,
+            .ce-table td {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            .ce-footer {
+                font-size: 12px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ce-table-container">
+    <div class="ce-title-bar">
+        <h1>Veterinary CE Requirements by State</h1>
+    </div>
+    <div class="ce-search-bar" style="text-align: center; margin: 10px 0;">
+        <input type="text" id="searchInput" placeholder="Search by state..." 
+               style="padding: 8px; width: 200px; border: 1px solid #ccc; border-radius: 4px;">
+    </div>
+    <div style="overflow-x: auto;">
+        <table class="ce-table">
+            <thead>
+                <tr>
+                    <th>State</th>
+                    <th>CE Total</th>
+                    <th>Practice Management</th>
+                    <th>Renewal Term</th>
+                    <th>Controlled Substances/Opioids</th>
+                    <th>Antimicrobial/Antibacterial</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+    <div class="ce-footer">
+       Vet On It LLC has compiled data as a courtesy from state veterinary board requirements. Requirements may change - always verify with your state board.
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ceData = [
+        { State: 'Alabama', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '4 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Alaska', CE_Total: '30 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Arizona', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '3 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Arkansas', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'California', CE_Total: '36 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: 'PDMP req', Antimicrobial_Antibacterial: 'One-time course req' },
+        { State: 'Colorado', CE_Total: '32 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Connecticut', CE_Total: '24 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Delaware', CE_Total: '24 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Florida', CE_Total: '30 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: '2 hrs' },
+        { State: 'Georgia', CE_Total: '30 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '3 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Hawaii', CE_Total: '20 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '1 hr', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Idaho', CE_Total: '20 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Illinois', CE_Total: '40 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '4 hrs total (1 hr safe use + 3 hrs prescribing), PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Indiana', CE_Total: '40 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Iowa', CE_Total: '60 hrs/3yr', PR: 'None specified', Renewal: 'Triennial', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Kansas', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Kentucky', CE_Total: '30 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Louisiana', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '3 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Maine', CE_Total: '30 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '3 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Maryland', CE_Total: '18 hrs/yr', PR: 'None specified', Renewal: 'Annual', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Massachusetts', CE_Total: '15 hrs/yr', PR: 'None specified', Renewal: 'Annual', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Michigan', CE_Total: '45 hrs/3yr', PR: 'None specified', Renewal: 'Triennial', Controlled_Sub: '3 hrs (1 hr pain + 2 hrs substances), PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Minnesota', CE_Total: '40 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Mississippi', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Missouri', CE_Total: '10 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '2 hrs, PDMP req where applicable', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Montana', CE_Total: '20 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Nebraska', CE_Total: '32 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '3 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Nevada', CE_Total: '20 hrs/yr', PR: 'None specified', Renewal: 'Annual', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'New Hampshire', CE_Total: '20 hrs/yr', PR: 'None specified', Renewal: 'Annual', Controlled_Sub: '3 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'New Jersey', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'New Mexico', CE_Total: '15 hrs/yr', PR: 'None specified', Renewal: 'Annual', Controlled_Sub: '5 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'New York', CE_Total: '45 hrs/3yr', PR: 'None specified', Renewal: 'Triennial', Controlled_Sub: '3 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'North Carolina', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'North Dakota', CE_Total: '24 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '3 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Ohio', CE_Total: '30 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Oklahoma', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Oregon', CE_Total: '30 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: 'PDMP req', Antimicrobial_Antibacterial: '2 hrs' },
+        { State: 'Pennsylvania', CE_Total: '30 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Rhode Island', CE_Total: '24 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: 'None specified', Antimicrobial_Antibacterial: 'None' },
+        { State: 'South Carolina', CE_Total: '30 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'South Dakota', CE_Total: '32 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Tennessee', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Texas', CE_Total: '17 hrs/yr', PR: 'None specified', Renewal: 'Annual', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Utah', CE_Total: '24 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '3.5 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Vermont', CE_Total: '24 hrs/2yr', PR: '6', Renewal: 'Biennial', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Virginia', CE_Total: '15 hrs/yr', PR: 'None specified', Renewal: 'Annual', Controlled_Sub: '2 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Washington', CE_Total: '30 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'Suicide prevention (once/6yr)' },
+        { State: 'West Virginia', CE_Total: '18 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: '3 hrs, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Wisconsin', CE_Total: '30 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Wyoming', CE_Total: '24 hrs/2yr', PR: 'None specified', Renewal: 'Biennial', Controlled_Sub: '1 hr, PDMP req', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Puerto Rico', CE_Total: 'Verify with board', PR: 'Contact board', Renewal: 'Triennial', Controlled_Sub: 'None specified', Antimicrobial_Antibacterial: 'None' },
+        { State: 'Guam', CE_Total: '20 hrs/yr (AVMA)', PR: 'None specified', Renewal: 'Annual', Controlled_Sub: 'None specified', Antimicrobial_Antibacterial: 'None' },
+        { State: 'U.S. Virgin Islands', CE_Total: '20 hrs/yr', PR: '6', Renewal: 'Annual', Controlled_Sub: 'None specified', Antimicrobial_Antibacterial: 'None' },
+        { State: 'American Samoa', CE_Total: '20 hrs/yr (AVMA)', PR: 'None specified', Renewal: 'Annual', Controlled_Sub: 'None specified', Antimicrobial_Antibacterial: 'None' }
+    ];
+        const tableBody = document.getElementById('tableBody');
+
+        // Function to populate table rows
+        function populateTable(data) {
+            tableBody.innerHTML = data.map(row => `
+                <tr>
+                    <td>${row.State}</td>
+                    <td>${row.CE_Total}</td>
+                    <td>${row.PR}</td>
+                    <td>${row.Renewal}</td>
+                    <td>${row.Controlled_Sub}</td>
+                    <td>${row.Antimicrobial_Antibacterial}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Initial population of the table with all data
+        populateTable(ceData);
+
+        // Add event listener for search input
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const filteredData = ceData.filter(row => row.State.toLowerCase().includes(query));
+            populateTable(filteredData);
+        });
+    });
+</script>
+
+</body>
+</html>
